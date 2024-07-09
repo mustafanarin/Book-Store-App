@@ -17,7 +17,7 @@ extension NumberExtension on BuildContext{
   double get highValue => dynamicHeight(0.05);
   double get buttonHeight => dynamicHeight(0.075);
   double get highLogoHeight => dynamicHeight(0.3);
-  double get  mediumLogoHeight => dynamicHeight(0.15);
+  double get  mediumLogoHeight => dynamicHeight(0.13);
   
 }
 

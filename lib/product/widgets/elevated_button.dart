@@ -1,9 +1,10 @@
+import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class ElevatedButtonProject extends StatelessWidget {
   const ElevatedButtonProject({
-    super.key, required this.text, this.onPressed, required this.backgroundColor, required this.textColor,
+    super.key, required this.text,required this.onPressed,this.backgroundColor = ProjectColors.entanRed, this.textColor = ProjectColors.white,
   });
   final String text;
   final void Function()? onPressed;

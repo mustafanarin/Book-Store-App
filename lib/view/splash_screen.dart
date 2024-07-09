@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
               width: context.highLogoHeight,
               child: Image.asset(ImageName.app_logo.path(),fit: BoxFit.contain,))),
             const Spacer(),
-            ElevatedButtonProject(text: loginButtonText,onPressed: (){},backgroundColor: ProjectColors.entanRed,textColor: ProjectColors.white,),
+            ElevatedButtonProject(text: loginButtonText,onPressed: (){},),
             ElevatedButtonProject(text: skipButtonText,onPressed: (){},backgroundColor: ProjectColors.flyByNight,textColor: ProjectColors.majoreBlue,)
           ],
         ),
