@@ -6,6 +6,7 @@ import 'package:book_store_mobile/product/widgets/elevated_button.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/product/widgets/medium_text.dart';
 import 'package:book_store_mobile/product/widgets/textFiled.dart';
+import 'package:book_store_mobile/view/register_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -42,46 +43,137 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Spacer(flex: 10,),
-              Center(
-                child: SizedBox(
-                  height: context.mediumLogoHeight,
-                  width: context.mediumLogoHeight,
-                  child: Image.asset(ImageName.app_logo.path(),fit: BoxFit.contain,)),
-              ),
+              _ScreenLogo(),
               const Spacer(flex: 25),
               mediumText(text: welcomeText,),
               largeText(text: titleText),
               const Spacer(flex: 20),
               mediumText(text: emailText),
-              TextFiledProject(hintText: tfEmailHint, controller: epostController, validator: Validators().validateEmail, keyboardType: TextInputType.emailAddress,),
+              _TextFiledEmail(tfEmailHint: tfEmailHint, epostController: epostController),
               const Spacer(flex: 5),
               mediumText(text: passwordText),
-              TextFiledProject(hintText: tfPasswordHint, controller: passwordController, validator: Validators().validatePassword, keyboardType: TextInputType.visiblePassword,obscure: true,),
+              _TextFieldPassword(tfPasswordHint: tfPasswordHint, passwordController: passwordController),
               Row(
                 children: [
-                  Checkbox(value: check, onChanged:(value) => setState(() {
-                    check = value ?? false;
-                  }),
-                  ),
-                  Text(checkBoxText,style: const TextStyle(color: ProjectColors.majoreBlue),),
+                  _CheckBox(),
+                  _CheckBoxText(checkBoxText: checkBoxText),
                   const Spacer(),
-                  GestureDetector(
-                    onTap: (){},
-                    child: Text(registerText,style: const TextStyle(color: ProjectColors.majoreBlue),))
+                  _GoRegisterPageText(registerText: registerText)
                 ],
               ),
               const Spacer(flex: 40,),
-               ElevatedButtonProject(text: loginButtonText, onPressed: () {
-                if(_key.currentState?.validate() ?? false){
-                print("okey");
-              }
-              },),
+               _LoginButton(loginButtonText: loginButtonText, formkey: _key),
               const Spacer(flex: 10)
             ],
           ),
         ),
       ),
     );
+  }
+
+  Checkbox _CheckBox() {
+    return Checkbox(value: check, onChanged:(value) => setState(() {
+            check = value ?? false;
+              }),
+            );
+  }
+}
+
+class _ScreenLogo extends StatelessWidget {
+  const _ScreenLogo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: context.mediumLogoHeight,
+        width: context.mediumLogoHeight,
+        child: Image.asset(ImageName.app_logo.path(),fit: BoxFit.contain,)),
+    );
+  }
+}
+
+class _TextFiledEmail extends StatelessWidget {
+  const _TextFiledEmail({
+    super.key,
+    required this.tfEmailHint,
+    required this.epostController,
+  });
+
+  final String tfEmailHint;
+  final TextEditingController epostController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFiledProject(hintText: tfEmailHint, controller: epostController, validator: Validators().validateEmail, keyboardType: TextInputType.emailAddress,);
+  }
+}
+
+class _TextFieldPassword extends StatelessWidget {
+  const _TextFieldPassword({
+    super.key,
+    required this.tfPasswordHint,
+    required this.passwordController,
+  });
+
+  final String tfPasswordHint;
+  final TextEditingController passwordController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFiledProject(hintText: tfPasswordHint, controller: passwordController, validator: Validators().validatePassword, keyboardType: TextInputType.visiblePassword,obscure: true,);
+  }
+}
+
+class _CheckBoxText extends StatelessWidget {
+  const _CheckBoxText({
+    super.key,
+    required this.checkBoxText,
+  });
+
+  final String checkBoxText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(checkBoxText,style: const TextStyle(color: ProjectColors.majoreBlue),);
+  }
+}
+
+class _GoRegisterPageText extends StatelessWidget {
+  const _GoRegisterPageText({
+    super.key,
+    required this.registerText,
+  });
+
+  final String registerText;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));},
+      child: Text(registerText,style: const TextStyle(color: ProjectColors.majoreBlue),));
+  }
+}
+
+class _LoginButton extends StatelessWidget {
+  const _LoginButton({
+    super.key,
+    required this.loginButtonText,
+    required GlobalKey<FormState> formkey,
+  }) : _key = formkey;
+
+  final String loginButtonText;
+  final GlobalKey<FormState> _key;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButtonProject(text: loginButtonText, onPressed: () {
+     if(_key.currentState?.validate() ?? false){
+     print("okey");
+                  }
+                  },);
   }
 }
 
