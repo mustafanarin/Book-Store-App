@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 class CatalogViewModel extends ChangeNotifier{
   final CategoryService _categoryService = CategoryService();
   List<CategoryModel> _categories = [];
+  List<CategoryModel> get categories => _categories;
 
   List<ProductModel> products = [];
   final ProductService _productService = ProductService();
-   List<Map<int, List<ProductModel>>> _productsByCategory = [];
+  List<Map<int, List<ProductModel>>> _productsByCategory = [];
+  List<ProductModel> getProductsForCategory(int categoryId) => _productsByCategory.firstWhere((element) => element.keys.first == categoryId).values.first;
 
   bool isLoading = false;
 
@@ -28,20 +30,13 @@ class CatalogViewModel extends ChangeNotifier{
     try{
      _changeLoading();
     _categories = await _categoryService.fetchCategories();
-
-    fetchProductsByCategory(1); 
-
-
+   fetchProductsByCategory(1); 
     
     _changeLoading(); 
     }catch(e){
       print(e.toString());
     }
   }
-
-  List<CategoryModel> get categories => _categories;
-
- List<ProductModel> getProductsForCategory(int categoryId) => _productsByCategory.firstWhere((element) => element.keys.first == categoryId).values.first;
 
   Future<void> fetchProductsByCategory(int categoryId) async {
      _changeLoading();

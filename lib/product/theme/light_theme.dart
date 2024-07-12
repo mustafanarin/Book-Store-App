@@ -29,6 +29,8 @@ class LightTheme{
                   filled: true,
                   fillColor: ProjectColors.maWhite,
                   hintStyle: TextStyle(color: ProjectColors.grey,fontWeight: FontWeight.w400),
+                  suffixIconColor: ProjectColors.grey,
+                  prefixIconColor: ProjectColors.grey
     ),
     checkboxTheme: const CheckboxThemeData(
       side: BorderSide(width: 2,color: ProjectColors.majoreBlue),

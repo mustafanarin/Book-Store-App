@@ -2,6 +2,8 @@ import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/extensions/image_path_extension.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
+import 'package:book_store_mobile/product/widgets/textfield_search.dart';
+import 'package:book_store_mobile/view/category_page.dart';
 import 'package:book_store_mobile/view_model/catalog_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -94,7 +96,7 @@ class TabbarPage extends StatefulWidget {
 }
 
 class _TabbarPageState extends State<TabbarPage> {
-  
+  final TextEditingController _tfSearchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Consumer<CatalogViewModel>(
@@ -102,80 +104,93 @@ class _TabbarPageState extends State<TabbarPage> {
           if (categoryViewModel.isLoading) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            return ListView.builder(
-              itemCount: categoryViewModel.categories.length,
-              itemBuilder: (context, index) {
-                final category = categoryViewModel.categories[index];
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    largeText(text: category.name ?? ""),
-                    SizedBox(
-                      height: 200,
-                      child: Consumer<CatalogViewModel>(
-                        builder:(context, productValue, child) {
-                          final products = productValue.getProductsForCategory(category.id ?? 1);
-
-              
-                          return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: products.length,
-                            itemBuilder:(context, index) {
-                              return Card(
-                                margin: const EdgeInsets.all(8),
-                                child: SizedBox(
-                                  width: 210,
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Image.asset(
-                                        'images/logo/book.png',
-                                        height: 80,
-                                        width: 70,
-                                        fit: BoxFit.contain,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0), //aaaaa
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              width: 120,
-                                              child: Text(
-                                                products[index].name ?? "",
-                                                style: const TextStyle(fontWeight: FontWeight.bold),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                softWrap: true,
-                                              ),
+            return Padding( //aaa
+              padding: context.paddingAllLow2,
+              child: Column(
+                children: [
+                  TextFieldSearch(tfSearchController: _tfSearchController),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: categoryViewModel.categories.length,
+                      itemBuilder: (context, index) {
+                        final category = categoryViewModel.categories[index];
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            largeText(text: category.name ?? ""),
+                            SizedBox(
+                              height: 200,
+                              child: Consumer<CatalogViewModel>(
+                                builder:(context, productValue, child) {
+                                  final products = productValue.getProductsForCategory(category.id ?? 1);
+                      
+                                  return ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 3,
+                                    itemBuilder:(context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) =>  CategoryPage(categoryModel: category,)));
+                                        },
+                                        child: Card(
+                                          margin: const EdgeInsets.all(8),
+                                          child: SizedBox(
+                                            width: 210,
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Image.asset(
+                                                  'images/logo/book.png',
+                                                  height: 80,
+                                                  width: 70,
+                                                  fit: BoxFit.contain,
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0), //aaaaa
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 120,
+                                                        child: Text(
+                                                          products[index].name ?? "",
+                                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          softWrap: true,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 120,
+                                                        child: Text(products[index].author ?? "")),
+                                                      Text(
+                                                        "${products[index].price ?? 0.00}",
+                                                        style: const TextStyle(color: Colors.green),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(
-                                              width: 120,
-                                              child: Text(products[index].author ?? "")),
-                                            Text(
-                                              "${products[index].price ?? 0.00}",
-                                              style: const TextStyle(color: Colors.green),
-                                            ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    )
-
-                  ],
-                );
-              },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            )
+                    
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             );
           }
         },
       );
   }
 }
-
