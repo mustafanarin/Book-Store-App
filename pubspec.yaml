@@ -36,6 +36,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
 
+  # Service
+  dio: ^5.5.0+1
+
+  # StateManagment
+  provider: ^6.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

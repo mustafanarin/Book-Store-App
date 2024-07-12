@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Spacer(flex: 10,),
-              _ScreenLogo(),
+              const _ScreenLogo(),
               const Spacer(flex: 25),
               mediumText(text: welcomeText,),
               largeText(text: titleText),

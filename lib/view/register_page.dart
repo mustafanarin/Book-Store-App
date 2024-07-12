@@ -6,7 +6,7 @@ import 'package:book_store_mobile/product/widgets/elevated_button.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/product/widgets/medium_text.dart';
 import 'package:book_store_mobile/product/widgets/textFiled.dart';
-import 'package:book_store_mobile/view/login_page.dart';
+import 'package:book_store_mobile/view/catalog_page.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -66,7 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
               const Spacer(flex: 2,),
               GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const CatalogPage(),),);
                 },
                 child: Align( 
                   alignment: Alignment.centerRight,
