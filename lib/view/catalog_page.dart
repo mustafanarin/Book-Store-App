@@ -3,7 +3,10 @@ import 'package:book_store_mobile/product/extensions/build_context_extensions.da
 import 'package:book_store_mobile/product/extensions/image_path_extension.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/product/widgets/textfield_search.dart';
+import 'package:book_store_mobile/services/product_service.dart';
 import 'package:book_store_mobile/view/category_page.dart';
+import 'package:book_store_mobile/view/den/den.dart';
+import 'package:book_store_mobile/view_model/Image_upload.dart';
 import 'package:book_store_mobile/view_model/catalog_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -97,6 +100,12 @@ class TabbarPage extends StatefulWidget {
 
 class _TabbarPageState extends State<TabbarPage> {
   final TextEditingController _tfSearchController = TextEditingController();
+  late final ProductService servis;
+  @override
+  void initState() {
+    // TODO: implement initState
+    servis = ProductService();
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<CatalogViewModel>(
@@ -113,17 +122,19 @@ class _TabbarPageState extends State<TabbarPage> {
                     child: ListView.builder(
                       itemCount: categoryViewModel.categories.length,
                       itemBuilder: (context, index) {
+                        
                         final category = categoryViewModel.categories[index];
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             largeText(text: category.name ?? ""),
+                            
                             SizedBox(
                               height: 200,
-                              child: Consumer<CatalogViewModel>(
+                              child: Consumer<CatalogViewModel>(//
                                 builder:(context, productValue, child) {
                                   final products = productValue.getProductsForCategory(category.id ?? 1);
-                      
+                                  context.read<ImageViewModel>().loadImage(products[index].cover ?? "1984.png");
                                   return ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: 3,
@@ -135,16 +146,27 @@ class _TabbarPageState extends State<TabbarPage> {
                                         child: Card(
                                           margin: const EdgeInsets.all(8),
                                           child: SizedBox(
-                                            width: 210,
+                                            width: 250                                  ,
                                             child: Row(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Image.asset(
-                                                  'images/logo/book.png',
-                                                  height: 80,
-                                                  width: 70,
-                                                  fit: BoxFit.contain,
-                                                ),
+                                                FutureBuilder<String>(
+                                              future: servis.getCoverImageUrl(products[index].cover ?? "1984.png"),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                                 return CircularProgressIndicator();
+                                                } else if (snapshot.hasError) {
+                                                  return Icon(Icons.error);
+                                                } else {
+                                                  return Image.network(
+                                                    snapshot.data!,
+                                                    height: 120,
+                                                    width: 100,
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                }
+                                              },
+                                            ),
                                                 Padding(
                                                   padding: const EdgeInsets.all(8.0), //aaaaa
                                                   child: Column(

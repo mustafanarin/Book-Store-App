@@ -3,8 +3,10 @@ import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/product/widgets/textfield_search.dart';
-import 'package:book_store_mobile/view/image_denem.dart';
+import 'package:book_store_mobile/services/product_service.dart';
+import 'package:book_store_mobile/view/product_detail_page.dart';
 import 'package:book_store_mobile/view_model/category_view_model.dart';
+import 'package:book_store_mobile/view_model/product_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +20,12 @@ class CategoryPage extends StatefulWidget {
 
 class _CategoryPageState extends State<CategoryPage> {
   final TextEditingController _tfSearchController = TextEditingController();
-  List<String> deneme = ["ankara","adana","izmir","istanbul"];
+  late final ProductService productService;
+  @override
+  void initState() {
+    super.initState();
+    productService = ProductService();
+  }
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<CategoryViewModel>(
@@ -46,9 +53,13 @@ class _CategoryPageState extends State<CategoryPage> {
                   childAspectRatio: 2/3 ), 
                   itemCount: context.watch<CategoryViewModel>().products.length,
                 itemBuilder: (context,index) {
+                  final id =context.watch<CategoryViewModel>().products[index].id ?? 1;
                   return GestureDetector(
+                    
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ImageDenem()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeNotifierProvider(
+      create: (_) => ProductDetailViewModel(),
+      child: ProductDetailPage(productId: id,categoryId: widget.categoryModel.id ?? 1,))));
                     },
                     child: Card(
                       color: ProjectColors.maWhite,
@@ -59,13 +70,24 @@ class _CategoryPageState extends State<CategoryPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Image.asset(
-                                'images/logo/book.png',
-                                height: 150,
-                                width: 150,
-                                fit: BoxFit.contain
-                              ),
-                              Text(context.watch<CategoryViewModel>().products[index].author ?? "",style:  TextStyle(fontWeight: FontWeight.bold),),
+                              FutureBuilder<String>(
+                              future: productService.getCoverImageUrl(context.watch<CategoryViewModel>().products[index].cover ?? "1984.png"),
+                              builder: (context, snapshot) {
+                                 if (snapshot.connectionState == ConnectionState.waiting) {
+                                   return CircularProgressIndicator();
+                                 } else if (snapshot.hasError) {
+                                   return Icon(Icons.error);
+                                } else {
+                                  return Image.network(
+                                    snapshot.data!,
+                                    height: 120,
+                                     width: 100,
+                                     fit: BoxFit.cover,
+                                   );
+                                 }
+                               },
+                             ),
+                              Text(context.watch<CategoryViewModel>().products[index].name ?? "",style:  TextStyle(fontWeight: FontWeight.bold),),
                               Row(
                                 children: [
                                   SizedBox(

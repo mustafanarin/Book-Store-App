@@ -14,6 +14,8 @@ class CatalogViewModel extends ChangeNotifier{
   List<Map<int, List<ProductModel>>> _productsByCategory = [];
   List<ProductModel> getProductsForCategory(int categoryId) => _productsByCategory.firstWhere((element) => element.keys.first == categoryId).values.first;
 
+  String? imageUrl;
+
   bool isLoading = false;
 
   CatalogViewModel(){
@@ -23,14 +25,14 @@ class CatalogViewModel extends ChangeNotifier{
     isLoading = !isLoading;
     notifyListeners();
   }
- late final int id;
+ //late final int id;
   
 
   Future<void> categoryFetch() async{
     try{
      _changeLoading();
     _categories = await _categoryService.fetchCategories();
-   fetchProductsByCategory(1); 
+    fetchProductsByCategory(1); 
     
     _changeLoading(); 
     }catch(e){
@@ -67,5 +69,13 @@ class CatalogViewModel extends ChangeNotifier{
      _changeLoading();
 
   }
+
+  Future<void> getCoverImageUrl(String fileName) async {
+    _changeLoading();
+    imageUrl = await _productService.getCoverImageUrl(fileName);
+    notifyListeners();
+    _changeLoading();
+  }
+
 
 }

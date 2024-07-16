@@ -13,15 +13,17 @@ class CategoryViewModel extends ChangeNotifier{
     _fetchCategory(categoryModel);
   }
 
-  void _isLoading(){
-    loading = !loading;
-    notifyListeners();
-  }
+  // void _isLoading(){
+  //   loading = !loading;
+  //   notifyListeners();
+  // }
 
   Future<void> _fetchCategory(CategoryModel model) async {
-    _isLoading();
+    loading = !loading;
+    notifyListeners();
     products = await _productService.fetchProductsByCategory(model.id ?? 1);
-    _isLoading();
+    loading = !loading;
+    notifyListeners();
   }
 
   

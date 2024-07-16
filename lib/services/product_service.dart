@@ -19,25 +19,35 @@ class ProductService {
     }
   }
 
-
-Future<String> getCoverImageUrl(String fileName) async {
-  final dio = Dio();
-  final url = 'https://assign-api.piton.com.tr/api/rest/cover_image';
-
-  try {
-    final response = await dio.post(
-      url,
-      data: {'fileName': fileName},
-      options: Options(headers: {'Content-Type': 'application/json'}),
-    );
-
-    if (response.statusCode == 200) {
-      return response.data['action_product_image']['url'];
-    } else {
-      throw Exception('Failed to load cover image URL');
+  Future<Map<String, dynamic>> fetchProductDetails(int categoryId, int productId) async {
+    try {
+      final response = await _dio.get('$_baseUrl/products/$categoryId');
+      if (response.statusCode == 200) {
+        final List<dynamic> products = response.data['product'];
+        final product = products.firstWhere(
+          (product) => product['id'] == productId,
+          orElse: () => throw Exception('Product not found'),
+        );
+        return product;
+      } else {
+        throw Exception('Failed to load product details');
+      }
+    } catch (e) {
+      throw Exception('Error fetching product details: $e');
     }
-  } catch (e) {
-    throw Exception('Error: $e');
   }
-}
+
+
+
+ Future<String> getCoverImageUrl(String fileName) async {
+    try {
+      final response = await _dio.post(
+        '$_baseUrl/cover_image',
+        data: {'fileName': fileName},
+      );
+      return response.data['action_product_image']['url'];
+    } catch (e) {
+      throw Exception('Failed to load image URL: $e');
+    }
+  }
 }
