@@ -41,4 +41,20 @@ class ApiService {
       throw Exception('Failed to load image URL: $e');
     }
   }
+
+  Future<List<ProductModel>> getAllProducts() async {
+    try {
+      List<ProductModel> allProducts = [];
+      List<CategoryModel> categories = await getCategories();
+      
+      for (var category in categories) {
+        List<ProductModel> products = await getProducts(category.id ?? 1);
+        allProducts.addAll(products);
+      }
+      
+      return allProducts;
+    } catch (e) {
+      throw Exception('Failed to load all products: $e');
+    }
+  }
 }

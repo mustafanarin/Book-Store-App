@@ -1,9 +1,12 @@
+import 'package:book_store_mobile/model/category_model.dart';
 import 'package:book_store_mobile/model/product_model.dart';
+import 'package:book_store_mobile/services/category_service.dart';
 import 'package:dio/dio.dart';
 
 class ProductService {
   final Dio _dio = Dio();
   final String _baseUrl = 'https://assign-api.piton.com.tr/api/rest';
+  final CategoryService _categoryService = CategoryService();
 
   Future<List<ProductModel>> fetchProductsByCategory(int? categoryId) async {
     try {
@@ -48,6 +51,23 @@ class ProductService {
       return response.data['action_product_image']['url'];
     } catch (e) {
       throw Exception('Failed to load image URL: $e');
+    }
+  }
+
+
+  Future<List<ProductModel>> getAllProducts() async {
+    try {
+      List<ProductModel> allProducts = [];
+      List<CategoryModel> categories = await _categoryService.fetchCategories();
+      
+      for (var category in categories) {
+        List<ProductModel> products = await fetchProductsByCategory(category.id);
+        allProducts.addAll(products);
+      }
+      
+      return allProducts;
+    } catch (e) {
+      throw Exception('Failed to load all products: $e');
     }
   }
 }

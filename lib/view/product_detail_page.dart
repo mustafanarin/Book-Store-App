@@ -59,9 +59,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                            return const CircularProgressIndicator();
-                                                } else if (snapshot.hasError) {
+                            } else if (snapshot.hasError) {
                             return const Icon(Icons.error);
-                                                } else {
+                            } else {
                             return Image.network(
                               snapshot.data!,
                               height: 120,

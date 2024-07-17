@@ -2,6 +2,8 @@
 
 import 'package:book_store_mobile/product/theme/light_theme.dart';
 import 'package:book_store_mobile/view/catalog_page.dart';
+import 'package:book_store_mobile/view/den/servis.dart';
+import 'package:book_store_mobile/view/den/view.dart';
 import 'package:book_store_mobile/view_model/Image_upload.dart';
 import 'package:book_store_mobile/view_model/catalog_view_model.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CatalogViewModel()),
-        ChangeNotifierProvider(create: (_) => ImageViewModel()),
+        //ChangeNotifierProvider(create: (_) => ImageViewModel()),
       //  ChangeNotifierProvider(create: (_) => ImageDen())
       ],
       child: MaterialApp(
