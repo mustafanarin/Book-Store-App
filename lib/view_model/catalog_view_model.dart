@@ -122,7 +122,7 @@ class CatalogViewModel extends ChangeNotifier {
           productsByCategories.add({category.id ?? 0: list});
         }
         _productsByCategory = productsByCategories;
-        _filteredProductsByCategory = List.from(_productsByCategory);
+       // _filteredProductsByCategory = List.from(_productsByCategory);
       }
     } catch (e) {
       print(e.toString());
@@ -130,12 +130,11 @@ class CatalogViewModel extends ChangeNotifier {
     _changeLoading();
   }
 
-  Future<void> getCoverImageUrl(String fileName) async {
-    _changeLoading();
-    imageUrl = await _productService.getCoverImageUrl(fileName);
-    notifyListeners();
-    _changeLoading();
-  }
+  // Future<void> getCoverImageUrl(String fileName) async {
+  //   _changeLoading();
+  //   imageUrl = await _productService.getCoverImageUrl(fileName);
+  //   _changeLoading();
+  // }
 
   void filterByCategory(String query) {
     if (query.isEmpty) {

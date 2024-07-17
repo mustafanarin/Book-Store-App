@@ -232,7 +232,7 @@ import 'package:book_store_mobile/view/category_page.dart';
 import 'package:book_store_mobile/view_model/catalog_view_model.dart';
 
 class CatalogPage extends StatefulWidget {
-  const CatalogPage({Key? key}) : super(key: key);
+  const CatalogPage({super.key});
 
   @override
   State<CatalogPage> createState() => _CatalogPageState();
@@ -286,11 +286,11 @@ class _CatalogPageState extends State<CatalogPage> {
         ),
         body: const TabBarView(
           children: <Widget>[
-            TabbarPage(),
-            TabbarPage(),
-            TabbarPage(),
-            TabbarPage(),
-            TabbarPage()
+            TabbarPage(id: 4),
+            TabbarPage(id: 0,),
+            TabbarPage(id: 1,),
+            TabbarPage(id: 2,),
+            TabbarPage(id: 3,)
           ],
         ),
       ),
@@ -299,7 +299,7 @@ class _CatalogPageState extends State<CatalogPage> {
 }
 
 class _Tab extends StatelessWidget {
-  const _Tab({Key? key, required this.text}) : super(key: key);
+  const _Tab({super.key, required this.text});
   final String text;
 
   @override
@@ -312,7 +312,8 @@ class _Tab extends StatelessWidget {
 }
 
 class TabbarPage extends StatefulWidget {
-  const TabbarPage({Key? key}) : super(key: key);
+  const TabbarPage({super.key, required this.id});
+  final int id;
 
   @override
   State<TabbarPage> createState() => _TabbarPageState();
@@ -344,98 +345,9 @@ class _TabbarPageState extends State<TabbarPage> {
                   onChanged: catalogViewModel.filterByCategory),
                 
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: catalogViewModel.categories.length,
-                    itemBuilder: (context, index) {
-                      final category = catalogViewModel.categories[index];
-                      final products = catalogViewModel.getProductsForCategory(category.id ?? 1);
-                      
-                      if (products.isEmpty) {
-                        return const SizedBox.shrink(); // Ürün yoksa bu kategoriyi gösterme
-                      }
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          largeText(text: category.name ?? ""),
-                          SizedBox(
-                            height: 200,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: products.length,
-                              itemBuilder: (context, productIndex) {
-                                final product = products[productIndex];
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => CategoryPage(
-                                        categoryModel: category,
-                                      
-                                      )
-                                    ));
-                                  },
-                                  child: Card(
-                                    margin: const EdgeInsets.all(8),
-                                    child: SizedBox(
-                                      width: 250,
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          FutureBuilder<String>(
-                                            future: servis.getCoverImageUrl(product.cover ?? "1984.png"),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                                return const CircularProgressIndicator();
-                                              } else if (snapshot.hasError) {
-                                                return const Icon(Icons.error);
-                                              } else {
-                                                return Image.network(
-                                                  snapshot.data!,
-                                                  height: 120,
-                                                  width: 100,
-                                                  fit: BoxFit.cover,
-                                                );
-                                              }
-                                            },
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 120,
-                                                  child: Text(
-                                                    product.name ?? "",
-                                                    style: const TextStyle(fontWeight: FontWeight.bold),
-                                                    maxLines: 2,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    softWrap: true,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 120,
-                                                  child: Text(product.author ?? "")
-                                                ),
-                                                Text(
-                                                  "${product.price ?? 0.00}",
-                                                  style: const TextStyle(color: Colors.green),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                  ),
+                  child: widget.id == 4 ? _AllCategoriesList(catalogViewModel: catalogViewModel, servis: servis,categoryId: null,) :
+                  _AllCategoriesList(servis: servis, catalogViewModel: catalogViewModel, categoryId: widget.id,)
+                  ,
                 ),
               ],
             ),
@@ -443,6 +355,115 @@ class _TabbarPageState extends State<TabbarPage> {
         }
       },
     );
+  }
+
+  
+}
+
+class _AllCategoriesList extends StatelessWidget {
+  const _AllCategoriesList({
+    super.key,
+    required this.servis, required this.catalogViewModel, this.categoryId,
+  });
+
+  final ProductService servis;
+  final CatalogViewModel catalogViewModel;
+  final int? categoryId;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+    itemCount: categoryId == null ? catalogViewModel.categories.length : 1,
+    itemBuilder: (context, index) {
+      final category = categoryId == null ? catalogViewModel.categories[index] : catalogViewModel.categories[categoryId!];
+      final products = catalogViewModel.getProductsForCategory(category.id ?? 1);
+      
+      if (products.isEmpty) {
+        return const SizedBox.shrink(); 
+      }
+    
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          largeText(text: category.name ?? ""),
+          SizedBox(
+            height: 200,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: products.length,
+              itemBuilder: (context, productIndex) {
+                final product = products[productIndex];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => CategoryPage(
+                        categoryModel: category,
+                      
+                      )
+                    ));
+                  },
+                  child: Card(
+                    margin: const EdgeInsets.all(8),
+                    child: SizedBox(
+                      width: 250,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FutureBuilder<String>(
+                            future: servis.getCoverImageUrl(product.cover ?? "1984.png"),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return const Icon(Icons.error);
+                              } else {
+                                return Image.network(
+                                  snapshot.data!,
+                                  height: 120,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                );
+                              }
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 120,
+                                  child: Text(
+                                    product.name ?? "",
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: true,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 120,
+                                  child: Text(product.author ?? "")
+                                ),
+                                Text(
+                                  "${product.price ?? 0.00}",
+                                  style: const TextStyle(color: Colors.green),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
+        ],
+      );
+    },
+                    );
   }
 }
 

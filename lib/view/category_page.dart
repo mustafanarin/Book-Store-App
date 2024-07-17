@@ -120,7 +120,6 @@
 // }
 
 import 'package:book_store_mobile/model/category_model.dart';
-import 'package:book_store_mobile/model/product_model.dart';
 import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
@@ -172,12 +171,11 @@ class _CategoryPageState extends State<CategoryPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 30),
-                        child: TextField(
-                  controller: _tfSearchController,
-                  onChanged: (value) {
+                        child:TextFieldSearch(
+                          tfSearchController: _tfSearchController,
+                          onChanged: (value) {
                             context.read<CategoryViewModel>().filterProducts(value);
-                          },
-                ),
+                          },)
                       ),
                       Expanded(
                         child: GridView.builder(
