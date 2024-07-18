@@ -1,13 +1,13 @@
 class Validators{
 
-  static const String _nameNotEmpty = 'Ad soyad boş bırakılamaz';
-  static const String _nameIsLetter = 'Ad soyad sadece harflerden oluşmalıdır';
+  static const String _nameNotEmpty = 'Name and surname cannot be left blank';
+  static const String _nameIsLetter = 'Name and surname must consist of letters only';
 
-  static const String _emailNotEmpty = 'E-posta boş bırakılamaz';
-  static const String _emailIsValid = 'Geçerli bir e-posta giriniz';
+  static const String _emailNotEmpty = 'Email cannot be left blank';
+  static const String _emailIsValid = 'Please enter a valid email';
 
-  static const String _passwordNotEmpty = 'Şifre boş bırakılamaz';
-  static const String _passwordLeastSixCharecter = 'Şifre en az 6 karakter olmalıdır';
+  static const String _passwordNotEmpty = 'Password cannot be left blank';
+  static const String _passwordLeastSixCharecter = 'Password must be at least 6 characters';
 
   // name 
   String? validateName(String? value) {

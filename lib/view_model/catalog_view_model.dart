@@ -122,7 +122,7 @@ class CatalogViewModel extends ChangeNotifier {
           productsByCategories.add({category.id ?? 0: list});
         }
         _productsByCategory = productsByCategories;
-       // _filteredProductsByCategory = List.from(_productsByCategory);
+        _filteredProductsByCategory = List.from(_productsByCategory);
       }
     } catch (e) {
       print(e.toString());

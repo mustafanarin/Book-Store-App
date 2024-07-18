@@ -119,6 +119,7 @@
 //   }
 // }
 
+import 'package:auto_route/auto_route.dart';
 import 'package:book_store_mobile/model/category_model.dart';
 import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
@@ -131,6 +132,7 @@ import 'package:book_store_mobile/view_model/product_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+@RoutePage()
 class CategoryPage extends StatefulWidget {
   const CategoryPage({Key? key, required this.categoryModel}) : super(key: key);
   final CategoryModel categoryModel;
@@ -188,8 +190,7 @@ class _CategoryPageState extends State<CategoryPage> {
                             final product = context.watch<CategoryViewModel>().products[index];
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                  context,
+                                AutoRouter.of(context).pushNativeRoute(
                                   MaterialPageRoute(
                                     builder: (context) => ChangeNotifierProvider(
                                       create: (_) => ProductDetailViewModel(),
@@ -198,7 +199,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                         categoryId: widget.categoryModel.id ?? 1,
                                       ),
                                     ),
-                                  ),
+                                  )
                                 );
                               },
                               child: Card(

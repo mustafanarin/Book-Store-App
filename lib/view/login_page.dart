@@ -1,14 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/extensions/image_path_extension.dart';
+import 'package:book_store_mobile/product/navigator/app_router.dart';
 import 'package:book_store_mobile/product/validator/validators.dart';
 import 'package:book_store_mobile/product/widgets/elevated_button.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/product/widgets/medium_text.dart';
 import 'package:book_store_mobile/product/widgets/textFiled.dart';
-import 'package:book_store_mobile/view/register_page.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -151,8 +153,8 @@ class _GoRegisterPageText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterPage()));},
+    return TextButton(
+      onPressed:() => AutoRouter.of(context).push(const RegisterRoute()),
       child: Text(registerText,style: const TextStyle(color: ProjectColors.majoreBlue),));
   }
 }
@@ -171,9 +173,9 @@ class _LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButtonProject(text: loginButtonText, onPressed: () {
      if(_key.currentState?.validate() ?? false){
-     print("okey");
-                  }
-                  },);
+      AutoRouter.of(context).replaceAll([CatalogRoute()]);
+}
+ },);
   }
 }
 

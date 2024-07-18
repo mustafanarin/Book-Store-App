@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:book_store_mobile/product/widgets/elevated_button.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/services/product_service.dart';
@@ -5,6 +6,7 @@ import 'package:book_store_mobile/view_model/product_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+@RoutePage()
 class ProductDetailPage extends StatefulWidget {
   final int categoryId;
   final int productId;

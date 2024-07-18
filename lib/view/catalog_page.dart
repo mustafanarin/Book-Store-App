@@ -220,6 +220,8 @@
 
 
 
+import 'package:auto_route/auto_route.dart';
+import 'package:book_store_mobile/product/navigator/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:book_store_mobile/product/color/project_colors.dart';
@@ -228,9 +230,9 @@ import 'package:book_store_mobile/product/extensions/image_path_extension.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/product/widgets/textfield_search.dart';
 import 'package:book_store_mobile/services/product_service.dart';
-import 'package:book_store_mobile/view/category_page.dart';
 import 'package:book_store_mobile/view_model/catalog_view_model.dart';
 
+@RoutePage()
 class CatalogPage extends StatefulWidget {
   const CatalogPage({super.key});
 
@@ -394,14 +396,7 @@ class _AllCategoriesList extends StatelessWidget {
               itemBuilder: (context, productIndex) {
                 final product = products[productIndex];
                 return GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => CategoryPage(
-                        categoryModel: category,
-                      
-                      )
-                    ));
-                  },
+                  onTap:() => AutoRouter.of(context).push(CategoryRoute(categoryModel: category)),
                   child: Card(
                     margin: const EdgeInsets.all(8),
                     child: SizedBox(
