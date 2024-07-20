@@ -47,13 +47,13 @@ class _LoginPageState extends State<LoginPage> {
               const Spacer(flex: 10,),
               const _ScreenLogo(),
               const Spacer(flex: 25),
-              mediumText(text: welcomeText,),
-              largeText(text: titleText),
+              MediumText(text: welcomeText,),
+              LargeText(text: titleText),
               const Spacer(flex: 20),
-              mediumText(text: emailText),
+              MediumText(text: emailText),
               _TextFiledEmail(tfEmailHint: tfEmailHint, epostController: epostController),
               const Spacer(flex: 5),
-              mediumText(text: passwordText),
+              MediumText(text: passwordText),
               _TextFieldPassword(tfPasswordHint: tfPasswordHint, passwordController: passwordController),
               Row(
                 children: [

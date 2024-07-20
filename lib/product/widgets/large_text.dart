@@ -2,8 +2,8 @@ import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 
-class largeText extends StatelessWidget {
-  const largeText({
+class LargeText extends StatelessWidget {
+  const LargeText({
     super.key, required this.text
   });
   final String text;

@@ -8,7 +8,6 @@ import 'package:book_store_mobile/product/widgets/elevated_button.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/product/widgets/medium_text.dart';
 import 'package:book_store_mobile/product/widgets/textFiled.dart';
-import 'package:book_store_mobile/view/catalog_page.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
@@ -55,46 +54,23 @@ class _RegisterPageState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Spacer(flex: 10),
-                      Center(
-                        child: SizedBox(
-                          height: context.mediumLogoHeight,
-                          width: context.mediumLogoHeight,
-                          child: Image.asset(ImageName.app_logo.path(), fit: BoxFit.contain),
-                        ),
-                      ),
+                      const _ScreenLogo(),
                       const Spacer(flex: 25),
-                      mediumText(text: _welcomeText, color: ProjectColors.grey),
-                      largeText(text: _titleText),
+                      MediumText(text: _welcomeText, color: ProjectColors.grey),
+                      LargeText(text: _titleText),
                       const Spacer(flex: 20),
-                      mediumText(text: _nameText),
-                      TextFiledProject(hintText: _tfNameHint, controller: nameController, validator: Validators().validateName, keyboardType: TextInputType.name),
+                      MediumText(text: _nameText),
+                      _TfName(tfNameHint: _tfNameHint, nameController: nameController),
                       const Spacer(flex: 5),
-                      mediumText(text: _emailText),
-                      TextFiledProject(hintText: _tfEmailHint, controller: epostController, validator: Validators().validateEmail, keyboardType: TextInputType.emailAddress),
+                      MediumText(text: _emailText),
+                      _TfEmail(tfEmailHint: _tfEmailHint, epostController: epostController),
                       const Spacer(flex: 5),
-                      mediumText(text: _passwordText),
-                      TextFiledProject(hintText: _tfPasswordHint, controller: passwordController, validator: Validators().validatePassword, keyboardType: TextInputType.visiblePassword, obscure: true),
+                      MediumText(text: _passwordText),
+                      _TfPassword(tfPasswordHint: _tfPasswordHint, passwordController: passwordController),
                       const Spacer(flex: 2),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CatalogPage()));
-                        },
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () => context.router.maybePop(),
-                            child: Text(_registerText, style: const TextStyle(color: ProjectColors.majoreBlue))),
-                        ),
-                      ),
+                      _TextButtonGoLogin(registerText: _registerText),
                       const Spacer(flex: 15),
-                      ElevatedButtonProject(
-                        text: _loginButtonText,
-                        onPressed: () {
-                          if (_key.currentState?.validate() ?? false) {
-                              AutoRouter.of(context).replaceAll([CatalogRoute()]);
-                          }
-                        },
-                      ),
+                      _ElevatedButtonRegister(loginButtonText: _loginButtonText, formKey: _key),
                       const Spacer(flex: 10)
                     ],
                   ),
@@ -104,6 +80,113 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ScreenLogo extends StatelessWidget {
+  const _ScreenLogo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: context.mediumLogoHeight,
+        width: context.mediumLogoHeight,
+        child: Image.asset(ImageName.app_logo.path(), fit: BoxFit.contain),
+      ),
+    );
+  }
+}
+
+class _TfName extends StatelessWidget {
+  const _TfName({
+    super.key,
+    required String tfNameHint,
+    required this.nameController,
+  }) : _tfNameHint = tfNameHint;
+
+  final String _tfNameHint;
+  final TextEditingController nameController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFiledProject(hintText: _tfNameHint, controller: nameController, validator: Validators().validateName, keyboardType: TextInputType.name);
+  }
+}
+
+class _TfEmail extends StatelessWidget {
+  const _TfEmail({
+    super.key,
+    required String tfEmailHint,
+    required this.epostController,
+  }) : _tfEmailHint = tfEmailHint;
+
+  final String _tfEmailHint;
+  final TextEditingController epostController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFiledProject(hintText: _tfEmailHint, controller: epostController, validator: Validators().validateEmail, keyboardType: TextInputType.emailAddress);
+  }
+}
+
+class _TfPassword extends StatelessWidget {
+  const _TfPassword({
+    super.key,
+    required String tfPasswordHint,
+    required this.passwordController,
+  }) : _tfPasswordHint = tfPasswordHint;
+
+  final String _tfPasswordHint;
+  final TextEditingController passwordController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFiledProject(hintText: _tfPasswordHint, controller: passwordController, validator: Validators().validatePassword, keyboardType: TextInputType.visiblePassword, obscure: true);
+  }
+}
+
+class _TextButtonGoLogin extends StatelessWidget {
+  const _TextButtonGoLogin({
+    super.key,
+    required String registerText,
+  }) : _registerText = registerText;
+
+  final String _registerText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: () => context.router.maybePop(),
+        child: Text(_registerText, style: const TextStyle(color: ProjectColors.majoreBlue))),
+    );
+  }
+}
+
+class _ElevatedButtonRegister extends StatelessWidget {
+  const _ElevatedButtonRegister({
+    super.key,
+    required String loginButtonText,
+    required GlobalKey<FormState> formKey,
+  }) : _loginButtonText = loginButtonText, _key = formKey;
+
+  final String _loginButtonText;
+  final GlobalKey<FormState> _key;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButtonProject(
+      text: _loginButtonText,
+      onPressed: () {
+        if (_key.currentState?.validate() ?? false) {
+            AutoRouter.of(context).replaceAll([const CatalogRoute()]);
+        }
+      },
     );
   }
 }

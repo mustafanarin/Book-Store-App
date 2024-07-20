@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 class LightTheme{
 
   ThemeData theme = ThemeData.light().copyWith(
+    scaffoldBackgroundColor: ProjectColors.white,
     appBarTheme: const AppBarTheme(
       backgroundColor: ProjectColors.white,
       shadowColor: ProjectColors.maWhite,
+      toolbarHeight: kToolbarHeight + VisualDensity.maximumDensity
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -34,6 +36,6 @@ class LightTheme{
     ),
     checkboxTheme: const CheckboxThemeData(
       side: BorderSide(width: 2,color: ProjectColors.majoreBlue),
-    )
+    ),
   );
 }

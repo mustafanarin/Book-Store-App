@@ -1,6 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:book_store_mobile/product/color/project_colors.dart';
+import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/widgets/elevated_button.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
+import 'package:book_store_mobile/product/widgets/medium_text.dart';
+import 'package:book_store_mobile/product/widgets/product_get_image.dart';
 import 'package:book_store_mobile/services/product_service.dart';
 import 'package:book_store_mobile/view_model/product_detail_view_model.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +28,8 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
 
   late final ProductService servis;
+  final String _appBarTitle = 'Book Details';
+  final String _descriptionTitle = "Summary";
    @override
   void initState() {
     super.initState();
@@ -35,7 +41,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product Detail'),
+        actions: [
+              Padding(
+                padding: EdgeInsets.only(right: context.dynamicWidht(0.05)),
+                child: LargeText(text: _appBarTitle),
+              )
+            ],
       ),
       body: Consumer<ProductDetailViewModel>(
     builder: (context, viewModel, child) {
@@ -48,50 +59,64 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       }
     
       final product = viewModel.product!;
-      return SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-               Center(
-                 child: Column(
-                   children: [
-                     FutureBuilder<String>(
-                         future: servis.getCoverImageUrl(product['cover'] ?? "1984.png"),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                           return const CircularProgressIndicator();
-                            } else if (snapshot.hasError) {
-                            return const Icon(Icons.error);
-                            } else {
-                            return Image.network(
-                              snapshot.data!,
-                              height: 120,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            );
-                          }
-                        },
+      return LayoutBuilder(
+        builder: (context,constraints){
+          return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: context.paddingAllLow2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Column(
+                              children: [
+                                ProductGetImage(servis: servis, imageHeight: context.dynamicHeight(0.3), imageWidht: context.dynamicWidht(0.5), forOnlyProduct: true,onlyProduct: product,),
+                                LargeText(text: product['name'] ?? ""),
+                                const SizedBox(height: 8),
+                                MediumText(text: '${product['author']}', color: ProjectColors.grey)
+                              ],
+                            ),
+                          ),
+                          LargeText(text: _descriptionTitle),
+                          SizedBox(height: context.lowValue1),
+                          _DescriptionText(product: product),
+                          // DEĞİŞİKLİK: Spacer eklendi
+                          Spacer(),
+                          SizedBox(height: context.highValue),
+                          ElevatedButtonProject(text: 'Buy Now: ${product['price']} \$', onPressed: (){}),
+                          SizedBox(height: context.mediumValue,)
+                        ],
                       ),
-                     largeText(text: product['name']),
-                     const SizedBox(height: 8),
-                     Text('${product['author']}'),
-                   ],
-                 ),
-               ),
-              const SizedBox(height: 8),
-              const SizedBox(height: 16),
-              const largeText(text: "Summary"),
-              const SizedBox(height: 8),
-              Text(product['description']),
-              const SizedBox(height: 10,),
-              ElevatedButtonProject(text: 'Buy Now: \$${product['price']}', onPressed: (){})
-            ],
-          ),
+                    ),
+                  ),
+                ),
+              );
+        }
       );
     },
         )
     );
+  }
+}
+
+
+class _DescriptionText extends StatelessWidget {
+  const _DescriptionText({
+    super.key,
+    required this.product,
+  });
+
+  final Map<String, dynamic> product;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+    product['description'],
+         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w300),
+        );
   }
 }
 
