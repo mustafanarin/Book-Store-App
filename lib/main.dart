@@ -13,14 +13,11 @@ void main() {
 class MyApp extends StatelessWidget {
    MyApp({super.key});
   final _appRouter = AppRouter();
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CatalogViewModel()),
-        //ChangeNotifierProvider(create: (_) => ImageViewModel()),
-      //  ChangeNotifierProvider(create: (_) => ImageDen())
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
