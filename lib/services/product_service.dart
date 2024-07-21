@@ -2,15 +2,16 @@ import 'package:book_store_mobile/model/category_model.dart';
 import 'package:book_store_mobile/model/product_model.dart';
 import 'package:book_store_mobile/services/category_service.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ProductService {
   final Dio _dio = Dio();
-  final String _baseUrl = 'https://assign-api.piton.com.tr/api/rest';
+  static final String _baseUrl = dotenv.env["BASE_URL"] ?? "";
   final CategoryService _categoryService = CategoryService();
 
   Future<List<ProductModel>> fetchProductsByCategory(int? categoryId) async {
     try {
-      final response = await _dio.get('$_baseUrl/products/$categoryId');
+      final response = await _dio.get('$_baseUrl/${_ProductServicePath.products.name}/$categoryId');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['product'];
         return data.map((json) => ProductModel.fromJson(json)).toList();
@@ -24,7 +25,7 @@ class ProductService {
 
   Future<Map<String, dynamic>> fetchProductDetails(int categoryId, int productId) async {
     try {
-      final response = await _dio.get('$_baseUrl/products/$categoryId');
+      final response = await _dio.get('$_baseUrl/${_ProductServicePath.products.name}/$categoryId');
       if (response.statusCode == 200) {
         final List<dynamic> products = response.data['product'];
         final product = products.firstWhere(
@@ -45,7 +46,7 @@ class ProductService {
  Future<String> getCoverImageUrl(String fileName) async {
     try {
       final response = await _dio.post(
-        '$_baseUrl/cover_image',
+        '$_baseUrl/${_ProductServicePath.cover_image.name}',
         data: {'fileName': fileName},
       );
       return response.data['action_product_image']['url'];
@@ -70,4 +71,9 @@ class ProductService {
       throw Exception('Failed to load all products: $e');
     }
   }
+}
+
+enum _ProductServicePath{
+  products,
+  cover_image
 }

@@ -50,6 +50,9 @@ dependencies:
   cached_network_image: ^3.3.1
   flutter_cache_manager: ^3.3.2
 
+  # Private Keys
+  flutter_dotenv: ^5.1.0
+
 
   lottie: ^3.1.2
 
@@ -83,6 +86,8 @@ flutter:
   assets:
     - images/logo/
     - images/lottie/
+    - images/image/
+    - .env
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

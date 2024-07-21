@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
-import 'package:book_store_mobile/product/extensions/image_path_extension.dart';
+import 'package:book_store_mobile/product/extensions/assets/logo_path_extension.dart';
 import 'package:book_store_mobile/product/navigator/app_router.dart';
 import 'package:book_store_mobile/product/validator/validators.dart';
 import 'package:book_store_mobile/product/widgets/elevated_button.dart';
@@ -95,7 +95,7 @@ class _ScreenLogo extends StatelessWidget {
       child: SizedBox(
         height: context.mediumLogoHeight,
         width: context.mediumLogoHeight,
-        child: Image.asset(ImageName.app_logo.path(), fit: BoxFit.contain),
+        child: Image.asset(LogoName.app_logo.path(), fit: BoxFit.contain),
       ),
     );
   }

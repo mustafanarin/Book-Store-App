@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:book_store_mobile/model/product_model.dart';
-import 'package:book_store_mobile/product/extensions/lottie_path_extension.dart';
+import 'package:book_store_mobile/product/extensions/assets/lottie_path_extension.dart';
 import 'package:book_store_mobile/product/navigator/app_router.dart';
 import 'package:book_store_mobile/product/widgets/product_get_image.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
-import 'package:book_store_mobile/product/extensions/image_path_extension.dart';
+import 'package:book_store_mobile/product/extensions/assets/logo_path_extension.dart';
 import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/product/widgets/textfield_search.dart';
 import 'package:book_store_mobile/services/product_service.dart';
@@ -40,7 +40,7 @@ class _CatalogPageState extends State<CatalogPage> {
         ],
         leading: Padding(
           padding: context.paddingAllLow1,
-          child: Image.asset(ImageName.app_logo.path(), fit: BoxFit.contain,),
+          child: Image.asset(LogoName.app_logo.path(), fit: BoxFit.contain,),
         ),
         elevation: 0,
       ),
