@@ -1,4 +1,5 @@
 
+import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:flutter/material.dart';
 
 class TextFiledProject extends StatelessWidget {
@@ -19,6 +20,9 @@ class TextFiledProject extends StatelessWidget {
      keyboardType: keyboardType,
      decoration: InputDecoration(
        hintText: hintText,
+     ),
+     style: Theme.of(context).textTheme.titleMedium?.copyWith(
+      color: ProjectColors.cosmicVoid
      ),
      obscureText: obscure,
   );

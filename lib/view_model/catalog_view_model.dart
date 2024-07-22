@@ -4,80 +4,6 @@ import 'package:book_store_mobile/services/category_service.dart';
 import 'package:book_store_mobile/services/product_service.dart';
 import 'package:flutter/material.dart';
 
-//filterByCategory oluştur dışardan arayacağımız şeyi filterda arayacağız 
-  // arama yapmıyorsa(filter boşsa?) filterı _prouctsbycategory eşitle 
-// class CatalogViewModel extends ChangeNotifier{
-//   final CategoryService _categoryService = CategoryService();
-//   List<CategoryModel> _categories = [];
-//   List<CategoryModel> get categories => _categories;
-
-//   List<ProductModel> products = [];
-//   final ProductService _productService = ProductService();
-//   List<Map<int, List<ProductModel>>> _productsByCategory = [];
-  
-//   List<ProductModel> getProductsForCategory(int categoryId) => _productsByCategory.firstWhere((element) => element.keys.first == categoryId).values.first;
-
-//   String? imageUrl;
-
-//   bool isLoading = false;
-
-//   CatalogViewModel(){
-//     categoryFetch();
-//   }
-//   void _changeLoading(){
-//     isLoading = !isLoading;
-//     notifyListeners();
-//   }
-  
-
-//   Future<void> categoryFetch() async{
-//     try{
-//      _changeLoading();
-//     _categories = await _categoryService.fetchCategories();
-//     fetchProductsByCategory(1); 
-    
-//     _changeLoading(); 
-//     }catch(e){
-//       print(e.toString());
-//     }
-//   }
-
-//   Future<void> fetchProductsByCategory(int categoryId) async {
-//      _changeLoading();
-
-//     List<Map<int, List<ProductModel>>> productsByCategories = [];
-
-//     try {
-
-//       if(_categories.isNotEmpty){
-//         for(var i = 0; i<_categories.length; i++){
-//           final list = await _productService.fetchProductsByCategory(_categories[i].id);
-
-//           final data = {_categories[i].id ?? 0: list};
-
-//           productsByCategories.add(data);
-//         }
-
-//         _productsByCategory = productsByCategories;
-//       }
-
-//     } catch (e) {
-//       print(e.toString());
-//     }
-//      _changeLoading();
-
-//   }
-
-//   Future<void> getCoverImageUrl(String fileName) async {
-//     _changeLoading();
-//     imageUrl = await _productService.getCoverImageUrl(fileName);
-//     notifyListeners();
-//     _changeLoading();
-//   }
-
-
-// }
-
 class CatalogViewModel extends ChangeNotifier {
   final CategoryService _categoryService = CategoryService();
   final ProductService _productService = ProductService();
@@ -90,6 +16,8 @@ class CatalogViewModel extends ChangeNotifier {
 
   String? imageUrl;
   bool isLoading = false;
+  int selectedIndex = 0;
+  int customTabBarIndex = 0;
 
   CatalogViewModel() {
    categoryFetch();
@@ -130,11 +58,6 @@ class CatalogViewModel extends ChangeNotifier {
     _changeLoading();
   }
 
-  // Future<void> getCoverImageUrl(String fileName) async {
-  //   _changeLoading();
-  //   imageUrl = await _productService.getCoverImageUrl(fileName);
-  //   _changeLoading();
-  // }
 
   void filterByCategory(String query) {
     if (query.isEmpty) {
@@ -157,6 +80,15 @@ class CatalogViewModel extends ChangeNotifier {
     return _filteredProductsByCategory
         .firstWhere((element) => element.keys.first == categoryId, 
                     orElse: () => {categoryId: []}).values.first;
+  }
+
+  void changeIndex(int index){
+    selectedIndex = index;
+    notifyListeners();
+  }
+  void changeCustomTabbarIndex(int index){
+    customTabBarIndex = index;
+    notifyListeners();
   }
 }
 

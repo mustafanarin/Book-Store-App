@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:book_store_mobile/product/color/project_colors.dart';
-import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/extensions/assets/logo_path_extension.dart';
+import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/navigator/app_router.dart';
 import 'package:book_store_mobile/product/validator/validators.dart';
 import 'package:book_store_mobile/product/widgets/elevated_button.dart';
@@ -85,9 +85,7 @@ class _RegisterPageState extends State<RegisterPage> {
 }
 
 class _ScreenLogo extends StatelessWidget {
-  const _ScreenLogo({
-    super.key,
-  });
+  const _ScreenLogo();
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +101,6 @@ class _ScreenLogo extends StatelessWidget {
 
 class _TfName extends StatelessWidget {
   const _TfName({
-    super.key,
     required String tfNameHint,
     required this.nameController,
   }) : _tfNameHint = tfNameHint;
@@ -119,7 +116,6 @@ class _TfName extends StatelessWidget {
 
 class _TfEmail extends StatelessWidget {
   const _TfEmail({
-    super.key,
     required String tfEmailHint,
     required this.epostController,
   }) : _tfEmailHint = tfEmailHint;
@@ -135,7 +131,6 @@ class _TfEmail extends StatelessWidget {
 
 class _TfPassword extends StatelessWidget {
   const _TfPassword({
-    super.key,
     required String tfPasswordHint,
     required this.passwordController,
   }) : _tfPasswordHint = tfPasswordHint;
@@ -151,7 +146,6 @@ class _TfPassword extends StatelessWidget {
 
 class _TextButtonGoLogin extends StatelessWidget {
   const _TextButtonGoLogin({
-    super.key,
     required String registerText,
   }) : _registerText = registerText;
 
@@ -162,15 +156,14 @@ class _TextButtonGoLogin extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        onPressed: () => context.router.maybePop(),
-        child: Text(_registerText, style: const TextStyle(color: ProjectColors.majoreBlue))),
+        onPressed: () => context.maybePop(),
+        child: Text(_registerText, style: Theme.of(context).textTheme.titleSmall)),
     );
   }
 }
 
 class _ElevatedButtonRegister extends StatelessWidget {
   const _ElevatedButtonRegister({
-    super.key,
     required String loginButtonText,
     required GlobalKey<FormState> formKey,
   }) : _loginButtonText = loginButtonText, _key = formKey;
@@ -184,7 +177,7 @@ class _ElevatedButtonRegister extends StatelessWidget {
       text: _loginButtonText,
       onPressed: () {
         if (_key.currentState?.validate() ?? false) {
-            AutoRouter.of(context).replaceAll([const CatalogRoute()]);
+            context.router.replaceAll([const CatalogRoute()]);
         }
       },
     );

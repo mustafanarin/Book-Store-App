@@ -1,6 +1,5 @@
 
 import 'package:book_store_mobile/product/color/project_colors.dart';
-import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class MediumText extends StatelessWidget {
@@ -12,9 +11,6 @@ class MediumText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,style: context.textTheme().bodyLarge?.copyWith(
-      fontWeight: FontWeight.w600,
-      color: color
-    ),);
+    return Text(text,style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: color));
   }
 }

@@ -83,8 +83,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           LargeText(text: _descriptionTitle),
                           SizedBox(height: context.lowValue1),
                           _DescriptionText(product: product),
-                          // DEĞİŞİKLİK: Spacer eklendi
-                          Spacer(),
+                       const   Spacer(),
                           SizedBox(height: context.highValue),
                           ElevatedButtonProject(text: 'Buy Now: ${product['price']} \$', onPressed: (){}),
                           SizedBox(height: context.mediumValue,)
@@ -105,7 +104,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
 class _DescriptionText extends StatelessWidget {
   const _DescriptionText({
-    super.key,
     required this.product,
   });
 
@@ -115,7 +113,9 @@ class _DescriptionText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
     product['description'],
-         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w300),
+         style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: const Color.fromRGBO(9, 9, 55, 0.6)
+         ),
         );
   }
 }

@@ -1,5 +1,3 @@
-import 'package:book_store_mobile/product/color/project_colors.dart';
-import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class LargeText extends StatelessWidget {
@@ -10,9 +8,6 @@ class LargeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,style: context.textTheme().titleLarge?.copyWith(
-      fontWeight: FontWeight.w700,
-      color: ProjectColors.cosmicVoid
-    ),);
+    return Text(text,style: Theme.of(context).textTheme.headlineLarge);
   }
 }

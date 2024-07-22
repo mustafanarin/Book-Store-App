@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:book_store_mobile/product/color/project_colors.dart';
-import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/extensions/assets/logo_path_extension.dart';
+import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/navigator/app_router.dart';
 import 'package:book_store_mobile/product/widgets/elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -35,9 +35,9 @@ class _SplashPageState extends State<SplashPage> {
               child: Image.asset(LogoName.app_logo.path(),fit: BoxFit.contain,))),
             const Spacer(),
             ElevatedButtonProject(text: loginButtonText,
-            onPressed: () => AutoRouter.of(context).replace(LoginRoute())),
+            onPressed: () => context.router.replace(const LoginRoute())),
             ElevatedButtonProject(text: skipButtonText,
-            onPressed: () => AutoRouter.of(context).replace(LoginRoute()),backgroundColor: ProjectColors.flyByNight,textColor: ProjectColors.majoreBlue,)
+            onPressed: () => context.router.replace(const LoginRoute()),backgroundColor: ProjectColors.flyByNight,textColor: ProjectColors.majoreBlue,)
           ],
         ),
       ),

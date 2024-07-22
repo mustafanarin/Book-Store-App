@@ -1,4 +1,5 @@
 
+import 'package:book_store_mobile/product/color/project_colors.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldSearch extends StatelessWidget {
@@ -17,9 +18,12 @@ class TextFieldSearch extends StatelessWidget {
       onChanged: onChanged,
       decoration: InputDecoration(
         hintText: searchText,
-        suffixIcon: Icon(Icons.tune),
-        prefixIcon: Icon(Icons.search),
+        suffixIcon: const Icon(Icons.tune),
+        prefixIcon: const Icon(Icons.search),
       ),
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+      color: ProjectColors.cosmicVoid
+     )
     );
   }
 }

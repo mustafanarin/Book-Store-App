@@ -11,43 +11,27 @@ import 'package:book_store_mobile/view/product_detail_page.dart';
 import 'package:book_store_mobile/view_model/category_view_model.dart';
 import 'package:book_store_mobile/view_model/product_detail_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
-
 @RoutePage()
-class CategoryPage extends StatefulWidget {
-  const CategoryPage({Key? key, required this.categoryModel}) : super(key: key);
+class CategoryPage extends HookWidget {
+  const CategoryPage({super.key, required this.categoryModel});
   final CategoryModel categoryModel;
 
   @override
-  State<CategoryPage> createState() => _CategoryPageState();
-}
-
-class _CategoryPageState extends State<CategoryPage> {
-  final TextEditingController _tfSearchController = TextEditingController();
-  late final ProductService productService;
-
-  @override
-  void initState() {
-    super.initState();
-    productService = ProductService();
-  }
-  @override
-  void dispose() {
-    super.dispose();
-    _tfSearchController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final tfSearchController = useTextEditingController();
+    final productService = useMemoized(() => ProductService(), []);
+
     return ChangeNotifierProvider<CategoryViewModel>(
-      create: (context) => CategoryViewModel(categoryModel: widget.categoryModel),
+      create: (context) => CategoryViewModel(categoryModel: categoryModel),
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
             actions: [
               Padding(
                 padding: EdgeInsets.only(right: context.dynamicWidht(0.05)),
-                child: LargeText(text: widget.categoryModel.name ?? ""),
+                child: LargeText(text: categoryModel.name ?? ""),
               )
             ],
           ),
@@ -57,25 +41,25 @@ class _CategoryPageState extends State<CategoryPage> {
                   padding: context.paddingColumnHorizontalLow2,
                   child: Column(
                     children: [
-                      _TextFieldSearch(tfSearchController: _tfSearchController),
+                      _TextFieldSearch(tfSearchController: tfSearchController),
                       Expanded(
                         child: GridView.builder(
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 2 / 3,
+                            childAspectRatio: 2 / 2.8,
                           ),
                           itemCount: context.watch<CategoryViewModel>().products.length,
                           itemBuilder: (context, index) {
                             final product = context.watch<CategoryViewModel>().products[index];
                             return GestureDetector(
                               onTap: () {
-                                AutoRouter.of(context).pushNativeRoute(
+                                context.router.pushNativeRoute(
                                   MaterialPageRoute(
                                     builder: (context) => ChangeNotifierProvider(
                                       create: (_) => ProductDetailViewModel(),
                                       child: ProductDetailPage(
                                         productId: product.id ?? 1,
-                                        categoryId: widget.categoryModel.id ?? 1,
+                                        categoryId: categoryModel.id ?? 1,
                                       ),
                                     ),
                                   )
@@ -88,7 +72,13 @@ class _CategoryPageState extends State<CategoryPage> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      ProductGetImage(servis: productService, imageHeight: context.dynamicHeight(0.25), imageWidht: context.dynamicWidht(0.40), forOnlyProduct: false,product: product,),
+                                      ProductGetImage(
+                                        servis: productService,
+                                        imageHeight: context.dynamicHeight(0.25),
+                                        imageWidht: context.dynamicWidht(0.40),
+                                        forOnlyProduct: false,
+                                        product: product,
+                                      ),
                                       SizedBox(height: context.lowValue1),
                                       _ProductNameText(product: product),
                                       Row(
@@ -114,10 +104,8 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 }
-
 class _TextFieldSearch extends StatelessWidget {
   const _TextFieldSearch({
-    super.key,
     required TextEditingController tfSearchController,
   }) : _tfSearchController = tfSearchController;
 
@@ -139,7 +127,6 @@ class _TextFieldSearch extends StatelessWidget {
 
 class _ProductNameText extends StatelessWidget {
   const _ProductNameText({
-    super.key,
     required this.product,
   });
 
@@ -150,7 +137,9 @@ class _ProductNameText extends StatelessWidget {
     return Flexible(
       child: Text(
         product.name ?? "",
-        style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 12),
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+          color: ProjectColors.cosmicVoid
+        ),
         overflow: TextOverflow.ellipsis,
       ),
     );
@@ -159,7 +148,6 @@ class _ProductNameText extends StatelessWidget {
 
 class _ProductAuthorText extends StatelessWidget {
   const _ProductAuthorText({
-    super.key,
     required this.product,
   });
 
@@ -171,7 +159,7 @@ class _ProductAuthorText extends StatelessWidget {
       width: context.dynamicWidht(0.25),
       child: Text(
         product.author ?? "",
-        style: const TextStyle(fontSize: 10),
+        style: Theme.of(context).textTheme.labelSmall,
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
         softWrap: true,
@@ -182,7 +170,6 @@ class _ProductAuthorText extends StatelessWidget {
 
 class _ProductPriceText extends StatelessWidget {
   const _ProductPriceText({
-    super.key,
     required this.product,
   });
 
@@ -192,7 +179,7 @@ class _ProductPriceText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       "${product.price ?? ""} \$",
-      style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w700,color: ProjectColors.majoreBlue),
+      style: Theme.of(context).textTheme.titleSmall,
     );
   }
 }

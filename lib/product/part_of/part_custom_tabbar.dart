@@ -5,21 +5,19 @@ class _CustomTabBar extends StatefulWidget {
   final Function(int) onTabSelected;
 
   const _CustomTabBar({
-    Key? key,
     required this.tabs,
     required this.onTabSelected,
-  }) : super(key: key);
+  });
 
   @override
   _CustomTabBarState createState() => _CustomTabBarState();
 }
 
 class _CustomTabBarState extends State<_CustomTabBar> {
-  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: context.dynamicHeight(0.055),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -29,15 +27,13 @@ class _CustomTabBarState extends State<_CustomTabBar> {
             padding: EdgeInsets.symmetric(horizontal: context.lowValue1),
             child: GestureDetector(
               onTap: () {
-                setState(() {
-                  _selectedIndex = index;
-                });
+                context.read<CatalogViewModel>().changeCustomTabbarIndex(index);
                 widget.onTabSelected(index);
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: context.lowValue2, vertical: context.lowValue1),
                 decoration: BoxDecoration(
-                  color: _selectedIndex == index
+                  color: context.watch<CatalogViewModel>().customTabBarIndex == index
                       ? ProjectColors.majoreBlue 
                       : ProjectColors.maWhite,
                   borderRadius: BorderRadius.circular(4),
@@ -45,7 +41,7 @@ class _CustomTabBarState extends State<_CustomTabBar> {
                 child: Text(
                   widget.tabs[index],
                   style: TextStyle(
-                    color: _selectedIndex == index
+                    color: context.watch<CatalogViewModel>().customTabBarIndex == index
                         ? ProjectColors.maWhite
                         : ProjectColors.grey,
                     fontWeight: FontWeight.w500,

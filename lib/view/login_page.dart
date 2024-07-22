@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:book_store_mobile/product/color/project_colors.dart';
-import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/extensions/assets/logo_path_extension.dart';
+import 'package:book_store_mobile/product/extensions/build_context_extensions.dart';
 import 'package:book_store_mobile/product/navigator/app_router.dart';
 import 'package:book_store_mobile/product/validator/validators.dart';
 import 'package:book_store_mobile/product/widgets/elevated_button.dart';
@@ -53,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
               MediumText(text: emailText),
               _TextFiledEmail(tfEmailHint: tfEmailHint, epostController: epostController),
               const Spacer(flex: 5),
-              MediumText(text: passwordText),
+              MediumText(text: passwordText,),
               _TextFieldPassword(tfPasswordHint: tfPasswordHint, passwordController: passwordController),
               Row(
                 children: [
@@ -73,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Checkbox _CheckBox() {
     return Checkbox(value: check, onChanged:(value) => setState(() {
             check = value ?? false;
@@ -82,9 +82,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class _ScreenLogo extends StatelessWidget {
-  const _ScreenLogo({
-    super.key,
-  });
+  const _ScreenLogo();
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +97,6 @@ class _ScreenLogo extends StatelessWidget {
 
 class _TextFiledEmail extends StatelessWidget {
   const _TextFiledEmail({
-    super.key,
     required this.tfEmailHint,
     required this.epostController,
   });
@@ -115,7 +112,6 @@ class _TextFiledEmail extends StatelessWidget {
 
 class _TextFieldPassword extends StatelessWidget {
   const _TextFieldPassword({
-    super.key,
     required this.tfPasswordHint,
     required this.passwordController,
   });
@@ -131,7 +127,6 @@ class _TextFieldPassword extends StatelessWidget {
 
 class _CheckBoxText extends StatelessWidget {
   const _CheckBoxText({
-    super.key,
     required this.checkBoxText,
   });
 
@@ -139,13 +134,12 @@ class _CheckBoxText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(checkBoxText,style: const TextStyle(color: ProjectColors.majoreBlue),);
+    return Text(checkBoxText,style: Theme.of(context).textTheme.titleSmall,);
   }
 }
 
 class _GoRegisterPageText extends StatelessWidget {
   const _GoRegisterPageText({
-    super.key,
     required this.registerText,
   });
 
@@ -154,14 +148,13 @@ class _GoRegisterPageText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed:() => AutoRouter.of(context).push(const RegisterRoute()),
-      child: Text(registerText,style: const TextStyle(color: ProjectColors.majoreBlue),));
+      onPressed:() => context.pushRoute(const RegisterRoute()),
+      child: Text(registerText,style: Theme.of(context).textTheme.titleSmall));
   }
 }
 
 class _LoginButton extends StatelessWidget {
   const _LoginButton({
-    super.key,
     required this.loginButtonText,
     required GlobalKey<FormState> formkey,
   }) : _key = formkey;
@@ -173,7 +166,7 @@ class _LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButtonProject(text: loginButtonText, onPressed: () {
      if(_key.currentState?.validate() ?? false){
-      AutoRouter.of(context).replaceAll([CatalogRoute()]);
+      context.router.replaceAll([const CatalogRoute()]);
 }
  },);
   }
