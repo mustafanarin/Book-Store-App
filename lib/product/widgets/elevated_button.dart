@@ -20,7 +20,7 @@ class ElevatedButtonProject extends StatelessWidget {
           backgroundColor: backgroundColor
         ),
         onPressed: onPressed,
-         child: Text(text,style: TextStyle(color: textColor),)),
-    );
+         child: Text(text,style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: textColor)),
+    ));
   }
 }

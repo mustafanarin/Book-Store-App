@@ -8,62 +8,61 @@ import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/product/widgets/medium_text.dart';
 import 'package:book_store_mobile/product/widgets/textFiled.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 @RoutePage()
-class LoginPage extends StatefulWidget {
+class LoginPage extends HookWidget {
   const LoginPage({super.key});
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-
-  final GlobalKey<FormState> _key = GlobalKey();
-  final TextEditingController epostController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  bool check = false;
-  final String welcomeText = "Welcome back!";
-  final String titleText = "Login to your account";
-  final String emailText = "E-mail";
-  final String tfEmailHint = "jhon@gmail.com";
-  final String passwordText = "Password";
-  final String tfPasswordHint = "● ● ● ● ● ●";
-  final String checkBoxText = "Remember me";
-  final String registerText = "Register";
-  final String loginButtonText = "Login";
+  final String _welcomeText = "Welcome back!";
+  final String _titleText = "Login to your account";
+  final String _emailText = "E-mail";
+  final String _tfEmailHint = "jhon@gmail.com";
+  final String _passwordText = "Password";
+  final String _tfPasswordHint = "● ● ● ● ● ●";
+  final String _checkBoxText = "Remember me";
+  final String _registerText = "Register";
+  final String _loginButtonText = "Login";
 
   @override
   Widget build(BuildContext context) {
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+    final epostController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final check = useState(false);
+
     return Scaffold(
       body: Padding(
         padding: context.paddingColumnHorizontalLow2,
         child: Form(
-          key: _key,
+          key: formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Spacer(flex: 10,),
               const _ScreenLogo(),
               const Spacer(flex: 25),
-              MediumText(text: welcomeText,),
-              LargeText(text: titleText),
+              MediumText(text: _welcomeText,),
+              LargeText(text: _titleText),
               const Spacer(flex: 20),
-              MediumText(text: emailText),
-              _TextFiledEmail(tfEmailHint: tfEmailHint, epostController: epostController),
+              MediumText(text: _emailText),
+              _TextFiledEmail(tfEmailHint: _tfEmailHint, epostController: epostController),
               const Spacer(flex: 5),
-              MediumText(text: passwordText,),
-              _TextFieldPassword(tfPasswordHint: tfPasswordHint, passwordController: passwordController),
+              MediumText(text: _passwordText,),
+              _TextFieldPassword(tfPasswordHint: _tfPasswordHint, passwordController: passwordController),
               Row(
                 children: [
-                  _CheckBox(),
-                  _CheckBoxText(checkBoxText: checkBoxText),
+                  Checkbox(
+                    value: check.value,
+                    onChanged: (value) => check.value = value ?? false,
+                  ),
+                  _CheckBoxText(checkBoxText: _checkBoxText),
                   const Spacer(),
-                  _GoRegisterPageText(registerText: registerText)
+                  _GoRegisterPageText(registerText: _registerText)
                 ],
               ),
               const Spacer(flex: 40,),
-               _LoginButton(loginButtonText: loginButtonText, formkey: _key),
+              _LoginButton(loginButtonText: _loginButtonText, formKey: formKey),
               const Spacer(flex: 10)
             ],
           ),
@@ -71,16 +70,29 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  // ignore: non_constant_identifier_names
-  Checkbox _CheckBox() {
-    return Checkbox(value: check, onChanged:(value) => setState(() {
-            check = value ?? false;
-              }),
-            );
-  }
 }
 
+class _LoginButton extends HookWidget {
+  const _LoginButton({
+    required this.loginButtonText,
+    required this.formKey,
+  });
+
+  final String loginButtonText;
+  final GlobalKey<FormState> formKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButtonProject(
+      text: loginButtonText,
+      onPressed: () {
+        if (formKey.currentState?.validate() ?? false) {
+          context.router.replaceAll([const CatalogRoute()]);
+        }
+      },
+    );
+  }
+}
 class _ScreenLogo extends StatelessWidget {
   const _ScreenLogo();
 
@@ -152,24 +164,4 @@ class _GoRegisterPageText extends StatelessWidget {
       child: Text(registerText,style: Theme.of(context).textTheme.titleSmall));
   }
 }
-
-class _LoginButton extends StatelessWidget {
-  const _LoginButton({
-    required this.loginButtonText,
-    required GlobalKey<FormState> formkey,
-  }) : _key = formkey;
-
-  final String loginButtonText;
-  final GlobalKey<FormState> _key;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButtonProject(text: loginButtonText, onPressed: () {
-     if(_key.currentState?.validate() ?? false){
-      context.router.replaceAll([const CatalogRoute()]);
-}
- },);
-  }
-}
-
 

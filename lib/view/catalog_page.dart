@@ -56,7 +56,7 @@ class _CatalogPageState extends State<CatalogPage> {
           Expanded(
             child: IndexedStack(
               index: context.watch<CatalogViewModel>().selectedIndex,
-              children: const <Widget>[
+              children: const [
                 _TabbarPage(id: 4),
                 _TabbarPage(id: 0),
                 _TabbarPage(id: 1),
@@ -86,10 +86,6 @@ class _TabbarPage extends HookWidget {
       servis.value = ProductService();
       return () {};
     }, []);
-
-    useEffect(() {
-      return () => tfSearchController.dispose();
-    }, [tfSearchController]);
 
     return Consumer<CatalogViewModel>(
       builder: (context, catalogViewModel, child) {

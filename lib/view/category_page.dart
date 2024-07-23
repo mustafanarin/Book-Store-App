@@ -21,7 +21,7 @@ class CategoryPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final tfSearchController = useTextEditingController();
-    final productService = useMemoized(() => ProductService(), []);
+    final productService = useMemoized(() => ProductService());
 
     return ChangeNotifierProvider<CategoryViewModel>(
       create: (context) => CategoryViewModel(categoryModel: categoryModel),

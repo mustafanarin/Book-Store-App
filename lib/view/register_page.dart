@@ -9,21 +9,12 @@ import 'package:book_store_mobile/product/widgets/large_text.dart';
 import 'package:book_store_mobile/product/widgets/medium_text.dart';
 import 'package:book_store_mobile/product/widgets/textFiled.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 @RoutePage()
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends HookWidget {
   const RegisterPage({super.key});
 
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  final GlobalKey<FormState> _key = GlobalKey();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController epostController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  bool check = false;
   final String _welcomeText = "Welcome";
   final String _titleText = "Register an account";
   final String _nameText = "Name";
@@ -37,6 +28,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+    final nameController = useTextEditingController();
+    final epostController = useTextEditingController();
+    final passwordController = useTextEditingController();
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SafeArea(
@@ -49,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Padding(
                 padding: context.paddingColumnHorizontalLow2,
                 child: Form(
-                  key: _key,
+                  key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -70,7 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       const Spacer(flex: 2),
                       _TextButtonGoLogin(registerText: _registerText),
                       const Spacer(flex: 15),
-                      _ElevatedButtonRegister(loginButtonText: _loginButtonText, formKey: _key),
+                      _ElevatedButtonRegister(loginButtonText: _loginButtonText, formKey: formKey),
                       const Spacer(flex: 10)
                     ],
                   ),
@@ -83,6 +79,8 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
+
+
 
 class _ScreenLogo extends StatelessWidget {
   const _ScreenLogo();
@@ -162,22 +160,22 @@ class _TextButtonGoLogin extends StatelessWidget {
   }
 }
 
-class _ElevatedButtonRegister extends StatelessWidget {
+class _ElevatedButtonRegister extends HookWidget {
   const _ElevatedButtonRegister({
-    required String loginButtonText,
-    required GlobalKey<FormState> formKey,
-  }) : _loginButtonText = loginButtonText, _key = formKey;
+    required this.loginButtonText,
+    required this.formKey,
+  });
 
-  final String _loginButtonText;
-  final GlobalKey<FormState> _key;
+  final String loginButtonText;
+  final GlobalKey<FormState> formKey;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButtonProject(
-      text: _loginButtonText,
+      text: loginButtonText,
       onPressed: () {
-        if (_key.currentState?.validate() ?? false) {
-            context.router.replaceAll([const CatalogRoute()]);
+        if (formKey.currentState?.validate() ?? false) {
+          context.router.replaceAll([const CatalogRoute()]);
         }
       },
     );

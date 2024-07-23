@@ -7,17 +7,11 @@ import 'package:book_store_mobile/product/widgets/elevated_button.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
-class SplashPage extends StatefulWidget {
+class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
 
-  @override
-  State<SplashPage> createState() => _SplashPageState();
-}
-
-class _SplashPageState extends State<SplashPage> {
-
-  final String loginButtonText = "Login";
-  final String skipButtonText = "Skip";
+  final String _loginButtonText = "Login";
+  final String _skipButtonText = "Skip";
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +28,10 @@ class _SplashPageState extends State<SplashPage> {
               width: context.highLogoHeight,
               child: Image.asset(LogoName.app_logo.path(),fit: BoxFit.contain,))),
             const Spacer(),
-            ElevatedButtonProject(text: loginButtonText,
-            onPressed: () => context.router.replace(const LoginRoute())),
-            ElevatedButtonProject(text: skipButtonText,
-            onPressed: () => context.router.replace(const LoginRoute()),backgroundColor: ProjectColors.flyByNight,textColor: ProjectColors.majoreBlue,)
+            ElevatedButtonProject(text: _loginButtonText,
+            onPressed: () => context.router.replace(LoginRoute())),
+            ElevatedButtonProject(text: _skipButtonText,
+            onPressed: () => context.router.replace(LoginRoute()),backgroundColor: ProjectColors.flyByNight,textColor: ProjectColors.majoreBlue,)
           ],
         ),
       ),
