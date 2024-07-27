@@ -53,7 +53,7 @@ For a complete list, please refer to the `pubspec.yaml` file.
 
 ## Screenshots
 
-![image](https://github.com/user-attachments/assets/955f78d9-0840-4fa2-af6c-900dfc7476b5)
+![image](https://github.com/user-attachments/assets/df4c9c49-c8f7-498a-860a-dc858cb2105a)
 ![image](https://github.com/user-attachments/assets/283e1a9c-2307-406a-9bfc-4d22fcc8c9d5)
 
 
